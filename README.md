@@ -92,23 +92,19 @@ lib/
 
 ## Скриншоты
 
-```markdown
 ### Главный экран
 ![Главный экран](screenshots/main.png)
 ![Главный экран](screenshots/mainNo.png)
 
 ### Детальная информация
-![Детальная информация](screenshots/card1.png)
+![Детальная информация](screenshots/card.png)
 ![Детальная информация](screenshots/card2.png)
 
 ### Список пород
 ![Список пород](screenshots/list.png)
-```
 
 ## Ссылка на APK
 
-```markdown
-[Скачать APK](https://drive.google.com/file/d/1QdPlAqzVTFj4Wv3oUvBogoI_HCw8YXxx/view?usp=sharing)
-```
+[Скачать APK](https://drive.google.com/uc?export=download&id=1QdPlAqzVTFj4Wv3oUvBogoI_HCw8YXxx)
 
 **Текущая версия APK:** `build/app/outputs/flutter-apk/app-release.apk` (44 MB)
