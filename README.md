@@ -92,40 +92,23 @@ lib/
 
 ## Скриншоты
 
-Для добавления скриншотов:
-
-1. Сделайте скриншоты приложения на разных экранах
-2. Сохраните их в папку `screenshots/` в корне проекта
-3. Добавьте их в README используя следующий формат:
-
 ```markdown
 ### Главный экран
-![Главный экран](screenshots/main_screen.png)
+![Главный экран](screenshots/main.png)
+![Главный экран](screenshots/mainNo.png)
 
 ### Детальная информация
-![Детальная информация](screenshots/detail_screen.png)
+![Детальная информация](screenshots/card1.png)
+![Детальная информация](screenshots/card2.png)
 
 ### Список пород
-![Список пород](screenshots/breeds_list.png)
+![Список пород](screenshots/list.png)
 ```
-
-Пример структуры:
-- `screenshots/main_screen.png` - главный экран со свайпом
-- `screenshots/detail_screen.png` - экран детальной информации
-- `screenshots/breeds_list.png` - список пород
 
 ## Ссылка на APK
 
-APK файл находится по пути: `build/app/outputs/flutter-apk/app-release.apk`
-
-Для публикации APK:
-
-1. Загрузите APK на файлообменник (Google Drive, Dropbox, GitHub Releases и т.д.)
-2. Получите прямую ссылку на скачивание
-3. Добавьте ссылку в README:
-
 ```markdown
-[Скачать APK](https://your-link-to-apk.com/app-release.apk)
+[Скачать APK](https://drive.google.com/file/d/1QdPlAqzVTFj4Wv3oUvBogoI_HCw8YXxx/view?usp=sharing)
 ```
 
 **Текущая версия APK:** `build/app/outputs/flutter-apk/app-release.apk` (44 MB)
