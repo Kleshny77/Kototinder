@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'screens/swipe_screen.dart';
+import 'core/di/app_container.dart';
+import 'domain/entities/auth_user.dart';
+import 'presentation/screens/login_screen.dart';
+import 'presentation/screens/onboarding_screen.dart';
+import 'presentation/screens/signup_screen.dart';
 import 'screens/breeds_list_screen.dart';
+import 'screens/swipe_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -30,8 +36,85 @@ class MyApp extends StatelessWidget {
           elevation: 8,
         ),
       ),
-      home: const MainScreen(),
+      home: const _AppGate(),
     );
+  }
+}
+
+/// Determines first screen: onboarding → auth → main.
+class _AppGate extends StatefulWidget {
+  const _AppGate();
+
+  @override
+  State<_AppGate> createState() => _AppGateState();
+}
+
+class _AppGateState extends State<_AppGate> {
+  bool _ready = false;
+  bool? _onboardingDone;
+  AuthUser? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _resolveRoute();
+  }
+
+  Future<void> _resolveRoute() async {
+    final onboardingDone =
+        await AppContainer.onboardingRepository.isOnboardingCompleted();
+    final user = await AppContainer.authRepository.getCurrentUser();
+    if (mounted) {
+      setState(() {
+        _onboardingDone = onboardingDone;
+        _user = user;
+        _ready = true;
+      });
+    }
+  }
+
+  Future<void> _goToMain() async {
+    final user = await AppContainer.authRepository.getCurrentUser();
+    if (mounted) setState(() => _user = user);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_ready) {
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('🐱', style: TextStyle(fontSize: 64)),
+              SizedBox(height: 24),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      );
+    }
+    if (_onboardingDone != true) {
+      return OnboardingScreen(onComplete: () {
+        setState(() => _onboardingDone = true);
+      });
+    }
+    if (_user == null) {
+      return LoginScreen(
+        onSuccess: _goToMain,
+        onGoToSignUp: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => SignUpScreen(
+                onSuccess: _goToMain,
+                onGoToLogin: () => Navigator.pop(context),
+              ),
+            ),
+          );
+        },
+      );
+    }
+    return const MainScreen();
   }
 }
 
@@ -45,7 +128,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [const SwipeScreen(), const BreedsListScreen()];
+  final List<Widget> _screens = [
+    const SwipeScreen(),
+    const BreedsListScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {

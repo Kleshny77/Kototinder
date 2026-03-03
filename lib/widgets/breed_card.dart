@@ -63,14 +63,14 @@ class _BreedSubtitle extends StatelessWidget {
             children: [
               const Icon(Icons.public, size: 16, color: Colors.grey),
               const SizedBox(width: 4),
-              Text(breed.origin!),
+              Text(breed.origin as String),
             ],
           ),
         ],
         if (breed.temperament != null) ...[
           const SizedBox(height: 4),
-          Text(
-            breed.temperament!,
+            Text(
+            breed.temperament as String,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 14),

@@ -150,17 +150,19 @@ class _CatInfo extends StatelessWidget {
             cat.breedName,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          if (cat.breed?.origin != null) ...[
+          if (cat.breed?.origin case final origin?) ...[
             const SizedBox(height: 4),
             Text(
-              cat.breed!.origin!,
+              origin,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
           ],
           const SizedBox(height: 8),
-          const Text(
-            'Нажмите на изображение для деталей',
-            style: TextStyle(
+          Text(
+            cat.breed != null
+                ? 'Нажмите на изображение для деталей'
+                : 'Нажмите, чтобы посмотреть фото',
+            style: const TextStyle(
               fontSize: 12,
               color: Colors.grey,
               fontStyle: FontStyle.italic,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../core/di/app_container.dart';
 import '../models/breed.dart';
-import '../services/cat_api_service.dart';
 import '../widgets/breed_card.dart';
 import '../widgets/gradient_background.dart';
 import '../widgets/gradient_app_bar.dart';
@@ -13,7 +13,7 @@ class BreedsListScreen extends StatefulWidget {
 }
 
 class _BreedsListScreenState extends State<BreedsListScreen> {
-  final CatApiService _apiService = CatApiService();
+  final _catRepository = AppContainer.catRepository;
   List<Breed> _breeds = [];
   bool _isLoading = true;
   String? _error;
@@ -31,7 +31,7 @@ class _BreedsListScreenState extends State<BreedsListScreen> {
     });
 
     try {
-      final breeds = await _apiService.getAllBreeds();
+      final breeds = await _catRepository.getAllBreeds();
       setState(() {
         _breeds = breeds;
         _isLoading = false;

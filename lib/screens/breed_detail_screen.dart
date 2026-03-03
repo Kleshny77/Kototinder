@@ -20,10 +20,9 @@ class BreedDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Изображение котика
             if (imageUrl != null)
               CachedNetworkImage(
-                imageUrl: imageUrl!,
+                imageUrl: imageUrl as String,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
                 placeholder: (context, url) => Container(
@@ -43,7 +42,6 @@ class BreedDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Название породы
                   Text(
                     breed.name,
                     style: const TextStyle(
@@ -53,14 +51,13 @@ class BreedDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // Происхождение и продолжительность жизни
                   if (breed.origin != null)
                     Row(
                       children: [
                         const Icon(Icons.public, size: 20, color: Colors.grey),
                         const SizedBox(width: 8),
                         Text(
-                          breed.origin!,
+                          breed.origin as String,
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.grey,
@@ -80,7 +77,7 @@ class BreedDetailScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${breed.lifeSpan} лет',
+                          '${breed.lifeSpan as String} лет',
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.grey,
@@ -93,7 +90,6 @@ class BreedDetailScreen extends StatelessWidget {
                   const Divider(),
                   const SizedBox(height: 16),
 
-                  // Описание
                   if (breed.description != null) ...[
                     const Text(
                       'Описание',
@@ -104,13 +100,12 @@ class BreedDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      breed.description!,
+                      breed.description as String,
                       style: const TextStyle(fontSize: 16, height: 1.5),
                     ),
                     const SizedBox(height: 16),
                   ],
 
-                  // Темперамент
                   if (breed.temperament != null) ...[
                     const Text(
                       'Темперамент',
@@ -123,7 +118,7 @@ class BreedDetailScreen extends StatelessWidget {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: breed.temperament!
+                      children: (breed.temperament as String)
                           .split(', ')
                           .map(
                             (trait) => Chip(
@@ -136,7 +131,6 @@ class BreedDetailScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                   ],
 
-                  // Характеристики
                   const Text(
                     'Характеристики',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -146,25 +140,25 @@ class BreedDetailScreen extends StatelessWidget {
                   if (breed.adaptability != null)
                     CharacteristicBar(
                       label: 'Адаптивность',
-                      value: breed.adaptability!,
+                      value: breed.adaptability as int,
                     ),
 
                   if (breed.affectionLevel != null)
                     CharacteristicBar(
                       label: 'Уровень привязанности',
-                      value: breed.affectionLevel!,
+                      value: breed.affectionLevel as int,
                     ),
 
                   if (breed.childFriendly != null)
                     CharacteristicBar(
                       label: 'Дружелюбие к детям',
-                      value: breed.childFriendly!,
+                      value: breed.childFriendly as int,
                     ),
 
                   if (breed.energyLevel != null)
                     CharacteristicBar(
                       label: 'Уровень энергии',
-                      value: breed.energyLevel!,
+                      value: breed.energyLevel as int,
                     ),
                 ],
               ),

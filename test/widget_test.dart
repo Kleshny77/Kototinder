@@ -6,15 +6,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_hw1/main.dart';
 
 void main() {
-  testWidgets('App starts and shows navigation bar', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('App starts and shows gate (loading then onboarding or login or main)', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
-    // Verify that the app has a BottomNavigationBar
-    expect(find.byType(BottomNavigationBar), findsOneWidget);
+    // Either still loading or one of: onboarding, login, main
+    final hasLoading = find.byType(CircularProgressIndicator).evaluate().isNotEmpty;
+    final hasNavBar = find.byType(BottomNavigationBar).evaluate().isNotEmpty;
+    final hasKototinder = find.text('Кототиндер').evaluate().isNotEmpty;
+    final hasLogin = find.text('Вход').evaluate().isNotEmpty;
+    final hasOnboarding = find.text('Свайпай котиков').evaluate().isNotEmpty;
 
-    // Verify that the navigation items are present
-    expect(find.text('Котики'), findsOneWidget);
-    expect(find.text('Список пород'), findsOneWidget);
+    expect(hasLoading || hasNavBar || hasKototinder || hasLogin || hasOnboarding, isTrue);
   });
 }
