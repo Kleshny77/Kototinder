@@ -1,6 +1,8 @@
 # Полная настройка Firebase (без заглушек)
 
-После выполнения этих шагов в проекте будет реальный конфиг Firebase, аналитика заработает, заглушка `firebase_options.dart` будет заменена сгенерированным файлом.
+**Важно:** Файлы с ключами (`firebase_options.dart`, `google-services.json`, `GoogleService-Info.plist`) в репозиторий не коммитятся. После клона скопируй пример: `cp lib/firebase_options.example.dart lib/firebase_options.dart`, затем при необходимости выполни `flutterfire configure`.
+
+После выполнения этих шагов в проекте будет реальный конфиг Firebase, аналитика заработает.
 
 ---
 

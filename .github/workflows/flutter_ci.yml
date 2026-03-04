@@ -18,6 +18,9 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Prepare Firebase options
+        run: cp lib/firebase_options.example.dart lib/firebase_options.dart
+
       - name: Install dependencies
         run: flutter pub get
 

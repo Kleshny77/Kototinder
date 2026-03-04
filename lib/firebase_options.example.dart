@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
 
+/// Пример без ключей. Скопировать в firebase_options.dart и подставить свои ключи
+/// из Firebase Console или: dart run flutterfire_cli:flutterfire configure
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     switch (defaultTargetPlatform) {
@@ -16,19 +18,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCFbmGVBMfhbtukWISRPdqM41T6rWrJRYc',
-    appId: '1:912656242746:android:2353485808b7e999aabd03',
-    messagingSenderId: '912656242746',
-    projectId: 'flutterhw2-kototinder',
-    storageBucket: 'flutterhw2-kototinder.firebasestorage.app',
+    apiKey: 'PLACEHOLDER_ANDROID_API_KEY',
+    appId: '1:000000000000:android:0000000000000000000000',
+    messagingSenderId: '000000000000',
+    projectId: 'your-project-id',
+    storageBucket: 'your-project-id.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDiDXd7xt3pLXy0e-6dcYpti6CW22trEYk',
-    appId: '1:912656242746:ios:014d177ecbbbbb9aaabd03',
-    messagingSenderId: '912656242746',
-    projectId: 'flutterhw2-kototinder',
-    storageBucket: 'flutterhw2-kototinder.firebasestorage.app',
+    apiKey: 'PLACEHOLDER_IOS_API_KEY',
+    appId: '1:000000000000:ios:0000000000000000000000',
+    messagingSenderId: '000000000000',
+    projectId: 'your-project-id',
+    storageBucket: 'your-project-id.firebasestorage.app',
     iosBundleId: 'com.example.flutterHw1',
   );
 }
