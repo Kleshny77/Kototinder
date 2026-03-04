@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-/// Экран просмотра фото котика, когда порода неизвестна.
 class CatImageDetailScreen extends StatelessWidget {
   const CatImageDetailScreen({super.key, required this.imageUrl});
 

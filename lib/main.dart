@@ -1,14 +1,25 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'core/di/app_container.dart';
+import 'data/analytics/firebase_app_analytics.dart';
 import 'domain/entities/auth_user.dart';
+import 'firebase_options.dart';
 import 'presentation/screens/login_screen.dart';
 import 'presentation/screens/onboarding_screen.dart';
 import 'presentation/screens/signup_screen.dart';
 import 'screens/breeds_list_screen.dart';
 import 'screens/swipe_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    AppContainer.analytics =
+        FirebaseAppAnalytics(FirebaseAnalytics.instance);
+    } catch (_) {}
   runApp(const MyApp());
 }
 
@@ -41,7 +52,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Determines first screen: onboarding → auth → main.
 class _AppGate extends StatefulWidget {
   const _AppGate();
 
@@ -114,12 +124,20 @@ class _AppGateState extends State<_AppGate> {
         },
       );
     }
-    return const MainScreen();
+    return MainScreen(onLogout: _logout);
+  }
+
+  Future<void> _logout() async {
+    await AppContainer.authRepository.signOut();
+    AppContainer.analytics.logLogout();
+    if (mounted) setState(() => _user = null);
   }
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({super.key, required this.onLogout});
+
+  final VoidCallback onLogout;
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -128,9 +146,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const SwipeScreen(),
-    const BreedsListScreen(),
+  late final List<Widget> _screens = [
+    SwipeScreen(onLogout: widget.onLogout),
+    BreedsListScreen(onLogout: widget.onLogout),
   ];
 
   @override

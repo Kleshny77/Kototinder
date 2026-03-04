@@ -26,7 +26,6 @@ class CatRemoteDataSourceImpl implements CatRemoteDataSource {
 
   @override
   Future<CatImage> fetchRandomCatImage() async {
-    // Запрашиваем несколько изображений с породами и берём первое с непустым breeds
     const limit = 10;
     final response = await http.get(
       Uri.parse('$_baseUrl/images/search?has_breeds=1&limit=$limit'),
@@ -46,7 +45,6 @@ class CatRemoteDataSourceImpl implements CatRemoteDataSource {
         return CatImage.fromJson(map);
       }
     }
-    // Если ни у одного нет породы (например, без API-ключа) — возвращаем первое
     return CatImage.fromJson(list[0] as Map<String, dynamic>);
   }
 

@@ -44,7 +44,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signOut() async {
-    await _local.clearCredentials();
     await _local.clearUserId();
   }
 

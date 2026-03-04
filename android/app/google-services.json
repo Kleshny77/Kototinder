@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912656242746",
+    "project_id": "flutterhw2-kototinder",
+    "storage_bucket": "flutterhw2-kototinder.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912656242746:android:2353485808b7e999aabd03",
+        "android_client_info": {
+          "package_name": "com.example.flutter_hw1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFbmGVBMfhbtukWISRPdqM41T6rWrJRYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

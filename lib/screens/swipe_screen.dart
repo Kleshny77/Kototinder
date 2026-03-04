@@ -11,7 +11,9 @@ import 'breed_detail_screen.dart';
 import 'cat_image_detail_screen.dart';
 
 class SwipeScreen extends StatefulWidget {
-  const SwipeScreen({super.key});
+  const SwipeScreen({super.key, this.onLogout});
+
+  final VoidCallback? onLogout;
 
   @override
   State<SwipeScreen> createState() => _SwipeScreenState();
@@ -98,9 +100,7 @@ class _SwipeScreenState extends State<SwipeScreen>
         _catQueue.add(cat);
         precacheImage(CachedNetworkImageProvider(cat.url), context);
       }
-    } catch (_) {
-      // ignore preload failure
-    } finally {
+    } catch (_) {} finally {
       _isPreloading = false;
     }
   }
@@ -136,6 +136,7 @@ class _SwipeScreenState extends State<SwipeScreen>
 
   void _onLike() {
     if (_isAnimating) return;
+    AppContainer.analytics.logCatLike();
     setState(() {
       _likeCount++;
     });
@@ -144,6 +145,7 @@ class _SwipeScreenState extends State<SwipeScreen>
 
   void _onDislike() {
     if (_isAnimating) return;
+    AppContainer.analytics.logCatDislike();
     _animateCardExit(false);
   }
 
@@ -216,6 +218,9 @@ class _SwipeScreenState extends State<SwipeScreen>
     final cat = _currentCat;
     if (cat == null) return;
     final breed = cat.breed;
+    if (breed != null) {
+      AppContainer.analytics.logBreedDetailView(breed.name);
+    }
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -238,7 +243,15 @@ class _SwipeScreenState extends State<SwipeScreen>
     return Scaffold(
       appBar: GradientAppBar(
         title: 'Кототиндер',
-        actions: [Center(child: LikeCounter(count: _likeCount))],
+        actions: [
+          Center(child: LikeCounter(count: _likeCount)),
+          if (widget.onLogout != null)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: widget.onLogout,
+              tooltip: 'Выйти',
+            ),
+        ],
       ),
       body: GradientBackground(
         child: _isLoading

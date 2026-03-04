@@ -6,7 +6,9 @@ import '../widgets/gradient_background.dart';
 import '../widgets/gradient_app_bar.dart';
 
 class BreedsListScreen extends StatefulWidget {
-  const BreedsListScreen({super.key});
+  const BreedsListScreen({super.key, this.onLogout});
+
+  final VoidCallback? onLogout;
 
   @override
   State<BreedsListScreen> createState() => _BreedsListScreenState();
@@ -73,7 +75,18 @@ class _BreedsListScreenState extends State<BreedsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GradientAppBar(title: 'Список пород'),
+      appBar: GradientAppBar(
+        title: 'Список пород',
+        actions: widget.onLogout != null
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: widget.onLogout,
+                  tooltip: 'Выйти',
+                ),
+              ]
+            : null,
+      ),
       body: GradientBackground(
         child: _isLoading
             ? const Center(
@@ -117,7 +130,11 @@ class _BreedsListScreenState extends State<BreedsListScreen> {
                     itemCount: _breeds.length,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     itemBuilder: (context, index) {
-                      return BreedCard(breed: _breeds[index]);
+                      return BreedCard(
+                        breed: _breeds[index],
+                        onTapDetail: (b) =>
+                            AppContainer.analytics.logBreedDetailView(b.name),
+                      );
                     },
                   ),
                 ),

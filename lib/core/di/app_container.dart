@@ -1,3 +1,5 @@
+import '../analytics/app_analytics.dart';
+import '../analytics/no_op_analytics.dart';
 import '../../data/datasources/auth_local_datasource.dart';
 import '../../data/datasources/cat_remote_datasource.dart';
 import '../../data/datasources/onboarding_local_datasource.dart';
@@ -11,9 +13,18 @@ import '../../domain/repositories/onboarding_repository.dart';
 class AppContainer {
   AppContainer._();
 
+  static AppAnalytics? _analytics;
   static AuthRepository? _authRepository;
   static OnboardingRepository? _onboardingRepository;
   static CatRepository? _catRepository;
+
+  static set analytics(AppAnalytics value) {
+    _analytics = value;
+  }
+
+  static AppAnalytics get analytics {
+    return _analytics ?? NoOpAnalytics();
+  }
 
   static AuthRepository get authRepository {
     _authRepository ??= AuthRepositoryImpl(AuthLocalDataSourceImpl());
@@ -32,6 +43,7 @@ class AppContainer {
   }
 
   static void reset() {
+    _analytics = null;
     _authRepository = null;
     _onboardingRepository = null;
     _catRepository = null;

@@ -3,9 +3,10 @@ import '../models/breed.dart';
 import '../screens/breed_detail_screen.dart';
 
 class BreedCard extends StatelessWidget {
-  final Breed breed;
+  const BreedCard({super.key, required this.breed, this.onTapDetail});
 
-  const BreedCard({super.key, required this.breed});
+  final Breed breed;
+  final void Function(Breed)? onTapDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class BreedCard extends StatelessWidget {
   }
 
   void _navigateToDetail(BuildContext context) {
+    onTapDetail?.call(breed);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BreedDetailScreen(breed: breed)),

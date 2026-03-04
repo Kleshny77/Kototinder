@@ -57,6 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   }
 
   Future<void> _finish() async {
+    AppContainer.analytics.logOnboardingComplete();
     await AppContainer.onboardingRepository.setOnboardingCompleted();
     if (mounted) widget.onComplete();
   }

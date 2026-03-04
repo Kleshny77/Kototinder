@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/di/app_container.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../widgets/animated_auth_background.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({
@@ -19,7 +20,8 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -28,9 +30,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscureConfirm = true;
   bool _isLoading = false;
   String? _errorMessage;
+  late AnimationController _animController;
+  late Animation<double> _fade;
+
+  @override
+  void initState() {
+    super.initState();
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _fade = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
+    );
+    _animController.forward();
+  }
 
   @override
   void dispose() {
+    _animController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -48,11 +66,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _passwordController.text,
       );
       if (mounted) {
+        AppContainer.analytics.logSignUpSuccess();
         Navigator.of(context).pop();
         await widget.onSuccess();
       }
     } on AuthException catch (e) {
       if (mounted) {
+        AppContainer.analytics.logSignUpError(e.message);
         setState(() {
           _errorMessage = e.message;
           _isLoading = false;
@@ -60,8 +80,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final msg = 'Ошибка регистрации. Попробуйте снова.';
+        AppContainer.analytics.logSignUpError(msg);
         setState(() {
-          _errorMessage = 'Ошибка регистрации. Попробуйте снова.';
+          _errorMessage = msg;
           _isLoading = false;
         });
       }
@@ -71,33 +93,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.deepPurple.shade400,
-              Colors.purple.shade300,
-            ],
-          ),
-        ),
+      body: AnimatedAuthBackground(
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      '🐱',
-                      style: TextStyle(fontSize: 64),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Регистрация',
+              child: FadeTransition(
+                opacity: _fade,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 80),
+                      const Text(
+                        'Регистрация',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -279,6 +289,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
+      ),
       ),
     );
   }

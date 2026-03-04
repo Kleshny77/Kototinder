@@ -22,7 +22,8 @@ void main() {
       await tester.enterText(find.byKey(const Key('login_email')), 'bad');
       await tester.enterText(find.byKey(const Key('login_password')), 'password123');
       await tester.tap(find.text('Войти'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Некорректный email'), findsOneWidget);
     });
@@ -69,7 +70,8 @@ void main() {
       await tester.enterText(find.byKey(const Key('signup_password')), 'password123');
       await tester.enterText(find.byKey(const Key('signup_confirm')), 'other456');
       await tester.tap(find.text('Зарегистрироваться'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Пароли не совпадают'), findsOneWidget);
     });
